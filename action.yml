@@ -1,0 +1,13 @@
+name: 'release-action'
+description: 'A GitHub Action to publish release by release API'
+inputs:
+  note:
+    description: 'Release note file'
+    required: true
+    default: 'RELEASE'
+  assets:
+    description: 'Assets of this release'
+    required: false
+runs:
+  using: 'node20'
+  main: 'index.js'
