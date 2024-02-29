@@ -30878,7 +30878,7 @@ try {
     const asset_paths = Core.getInput('assets').split("\n").map(s => s.trim());
     console.log(`Assets: ${asset_paths}`);
 } catch (error) {
-    core.setFailed(error.message);
+    Core.setFailed(error.message);
 }
 })();
 
