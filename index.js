@@ -11,12 +11,13 @@ try {
     const [tag_str, tag_name] = note_content.match(/^\`(.*)\`\n/);
     note_content = note_content.substring(tag_str.length);
     // Get tags
-    let tags = await Octokit.rest.git.listMatchingRefs({
+    Octokit.rest.git.listMatchingRefs({
         owner: Github.context.repo.owner,
         repo: Github.context.repo.repo,
         ref: `tags/${tag_name}`
-    }).then(req => req.data)
-    console.dir(tags)
+    })
+    .then(req => req.data)
+    .then(console.log)
 
     // Get assets
     const asset_paths = Core.getInput('assets').split("\n").map(s => s.trim());
