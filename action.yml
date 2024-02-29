@@ -4,7 +4,7 @@ inputs:
   note:
     description: 'Release note file'
     required: true
-    default: 'RELEASE'
+    default: 'RELEASE.md'
   assets:
     description: 'Assets of this release'
     required: false

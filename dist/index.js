@@ -30866,13 +30866,16 @@ module.exports = parseParams
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-const core = __nccwpck_require__(2186);
-const github = __nccwpck_require__(5438);
+const Core = __nccwpck_require__(2186);
+const Github = __nccwpck_require__(5438);
+const Path = __nccwpck_require__(1017)
 
 try {
-    const note_path = core.getInput('note');
+    const note_path = Path.resolve(Core.getInput('note'));
     console.log(`Note ${note_path}`);
-    const asset_paths = core.getInput('assets').split("\n").map(s => s.trim());
+    const note_content = fs.readFileSync(note_path, {encoding: 'utf8'})
+    console.log(note_content)
+    const asset_paths = Core.getInput('assets').split("\n").map(s => s.trim());
     console.log(`Assets: ${asset_paths}`);
 } catch (error) {
     core.setFailed(error.message);

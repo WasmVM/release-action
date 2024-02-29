@@ -1,10 +1,13 @@
-const core = require('@actions/core');
-const github = require('@actions/github');
+const Core = require('@actions/core');
+const Github = require('@actions/github');
+const Path = require("path")
 
 try {
-    const note_path = core.getInput('note');
+    const note_path = Path.resolve(Core.getInput('note'));
     console.log(`Note ${note_path}`);
-    const asset_paths = core.getInput('assets').split("\n").map(s => s.trim());
+    const note_content = fs.readFileSync(note_path, {encoding: 'utf8'})
+    console.log(note_content)
+    const asset_paths = Core.getInput('assets').split("\n").map(s => s.trim());
     console.log(`Assets: ${asset_paths}`);
 } catch (error) {
     core.setFailed(error.message);
