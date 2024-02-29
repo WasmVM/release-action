@@ -4,7 +4,7 @@ const github = require('@actions/github');
 try {
     const note_path = core.getInput('note');
     console.log(`Note ${note_path}`);
-    const asset_paths = core.getInput('assets');
+    const asset_paths = core.getInput('assets').split("\n").map(s => s.trim());
     console.log(`Assets: ${asset_paths}`);
 } catch (error) {
     core.setFailed(error.message);

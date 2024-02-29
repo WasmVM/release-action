@@ -16,5 +16,5 @@ jobs:
       uses: ./
       with:
         assets: |-
-          - a.deb
-          - b.deb
+          a.deb
+          b.deb
