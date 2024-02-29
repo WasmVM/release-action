@@ -15,6 +15,7 @@ jobs:
     - name: Test action
       uses: ./
       with:
+        token: ${{secrets.GITHUB_TOKEN}}
         assets: |-
           a.deb
           b.deb
