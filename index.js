@@ -10,18 +10,29 @@ try {
     let note_content = fs.readFileSync(Path.resolve(Core.getInput('note')), {encoding: 'utf8'});
     const [tag_str, tag_name] = note_content.match(/^\`(.*)\`\n/);
     note_content = note_content.substring(tag_str.length);
-    // Get tags
+    const [_, release_name] = note_content.match(/^#\s+(.*)\n/);
+    // Get assets
+    const asset_paths = Core.getInput('assets').split("\n").map(s => s.trim());
+    console.log(`Assets: ${asset_paths}`);
+    // Get/Create tags
     Octokit.rest.git.listMatchingRefs({
         owner: Github.context.repo.owner,
         repo: Github.context.repo.repo,
         ref: `tags/${tag_name}`
     })
-    .then(req => req.data)
-    .then(console.log)
-
-    // Get assets
-    const asset_paths = Core.getInput('assets').split("\n").map(s => s.trim());
-    console.log(`Assets: ${asset_paths}`);
+    .then(res => res.data)
+    .then(Octokit.request('POST /repos/{owner}/{repo}/releases', {
+        owner: Github.context.repo.owner,
+        repo: Github.context.repo.repo,
+        tag_name: tag_name,
+        target_commitish: Github.context.sha,
+        name: release_name,
+        body: note_content,
+        draft: true,
+        headers: {
+          'X-GitHub-Api-Version': '2022-11-28'
+        }
+    }))
 } catch (error) {
     Core.setFailed(error.message);
 }
