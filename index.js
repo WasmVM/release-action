@@ -13,8 +13,7 @@ try {
     const [name_str, release_name] = note_content.match(/^#\s+(.*)\n/);
     note_content = note_content.substring(name_str.length);
     // Get assets
-    const asset_paths = Core.getInput('assets').split("\n").map(s => s.trim());
-    console.log(`Assets: ${asset_paths}`);
+    const asset_paths = Core.getInput('assets').length ? Core.getInput('assets').split("\n").map(s => s.trim()) : [];
     // Create release
     Octokit.rest.repos.createRelease({
         owner: Github.context.repo.owner,
