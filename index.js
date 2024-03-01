@@ -22,9 +22,7 @@ try {
         target_commitish: Github.context.sha,
         name: release_name,
         body: note_content,
-        draft: Boolean(Core.getInput('draft', {
-            trimWhitespace: true
-        })) 
+        draft: Core.getInput('draft', {trimWhitespace: true}) == "true"
     })
     // Upload assets
     .then(res => Promise.all(asset_paths.map(asset => Octokit.rest.repos.uploadReleaseAsset({
