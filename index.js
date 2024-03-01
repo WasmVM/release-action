@@ -10,7 +10,8 @@ try {
     let note_content = fs.readFileSync(Path.resolve(Core.getInput('note')), {encoding: 'utf8'});
     const [tag_str, tag_name] = note_content.match(/^\`(.*)\`\n/);
     note_content = note_content.substring(tag_str.length);
-    const [_, release_name] = note_content.match(/^#\s+(.*)\n/);
+    const [name_str, release_name] = note_content.match(/^#\s+(.*)\n/);
+    note_content = note_content.substring(name_str.length);
     // Get assets
     const asset_paths = Core.getInput('assets').split("\n").map(s => s.trim());
     console.log(`Assets: ${asset_paths}`);
