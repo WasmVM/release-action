@@ -17,5 +17,5 @@ jobs:
       with:
         token: ${{secrets.GITHUB_TOKEN}}
         assets: |-
-          a.deb
-          b.deb
+          a.txt
+          b.log

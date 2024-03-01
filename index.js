@@ -15,25 +15,27 @@ try {
     // Get assets
     const asset_paths = Core.getInput('assets').split("\n").map(s => s.trim());
     console.log(`Assets: ${asset_paths}`);
-    // Get/Create tags
-    Octokit.rest.git.listMatchingRefs({
-        owner: Github.context.repo.owner,
-        repo: Github.context.repo.repo,
-        ref: `tags/${tag_name}`
-    })
-    .then(res => res.data)
-    .then(Octokit.request('POST /repos/{owner}/{repo}/releases', {
+    // Create release
+    Octokit.rest.repos.createRelease({
         owner: Github.context.repo.owner,
         repo: Github.context.repo.repo,
         tag_name: tag_name,
         target_commitish: Github.context.sha,
         name: release_name,
         body: note_content,
-        draft: true,
-        headers: {
-          'X-GitHub-Api-Version': '2022-11-28'
-        }
-    }))
+        draft: true
+    })
+    // Upload assets
+    .then(res => Promise.all(asset_paths.map(asset => Octokit.rest.repos.uploadReleaseAsset({
+        owner: Github.context.repo.owner,
+        repo: Github.context.repo.repo,
+        release_id: res.data.id,
+        name: Path.basename(asset),
+        data: fs.readFileSync(asset)
+    }))))
+    .then(() => {
+        console.log("Release created!")
+    })
 } catch (error) {
     Core.setFailed(error.message);
 }
