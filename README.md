@@ -25,4 +25,5 @@ uses: WasmVM/release-action@master
 
 **draft** : [required] Whether this is draft release, true or false
   default: false
+  
 **assets** : [optional] Files added to assets
