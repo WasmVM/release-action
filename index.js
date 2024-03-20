@@ -2,6 +2,7 @@ const Core = require('@actions/core');
 const Github = require('@actions/github');
 const Path = require("path")
 const fs = require('fs')
+const {globSync} = require('glob')
 
 try {
     // Get octokit
@@ -13,7 +14,8 @@ try {
     const [name_str, release_name] = note_content.match(/^#\s+(.*)\n/);
     note_content = note_content.substring(name_str.length);
     // Get assets
-    const asset_paths = Core.getInput('assets').length ? Core.getInput('assets').split("\n").map(s => s.trim()) : [];
+    const asset_paths = Core.getInput('assets').length ? Core.getInput('assets').split("\n").reduce((prev, cur) =>  prev.concat(globSync(cur.trim())), []) : [];
+
     // Create release
     Octokit.rest.repos.createRelease({
         owner: Github.context.repo.owner,
